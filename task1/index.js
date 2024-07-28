@@ -1,33 +1,32 @@
 import fs from 'fs';
 
+const dir = './task1/result';
+const path = `${dir}/task-1.txt`;
+const callback = error => console.error(error);
+
 const addStringInFile = (str) => {
-    fs.appendFileSync('result/task-1.txt', str, 'utf-8');
+    fs.appendFileSync(path, str, 'utf-8', callback);
 };
 
-const createAndWriteFile = (name) => {
-    fs.writeFile(name, "first line\n", 'utf-8', (err) => {
-        if (err) throw err;
+const createAndWriteFile = (path) => {
+    fs.writeFile(path, "first line", 'utf-8', callback);
 
-        addStringInFile("line #1\n");
-        addStringInFile("line #2\n");
-        addStringInFile("line #3\n");
-        addStringInFile('last line');
-    });
-}
+    addStringInFile("\r\nline #1");
+    addStringInFile("\r\nline #2");
+    addStringInFile("\r\nline #3");
+    addStringInFile('\r\nlast line');
+};
 
 const runMe = () => {
-    if (fs.existsSync('result/task-1.txt')) {
-        addStringInFile("\nadditional line");
+    if (fs.existsSync(path)) {
+        addStringInFile("\r\nadditional line");
     } else {
-        if (! fs.existsSync('result')) {
-            fs.mkdir('result', {recursive: true}, (err) => {
-                if (err) throw err;
-
-                createAndWriteFile('result/task-1.txt');
-                console.log('succes');
-            });
+        if (! fs.existsSync(dir)) {
+            fs.mkdir(dir, {recursive: true}, callback)
+            createAndWriteFile(path);
+            console.log('succes');
         } else {
-            createAndWriteFile('result/task-1.txt');
+            createAndWriteFile(path);
             console.log('succes wiht dir');
         }
     }
